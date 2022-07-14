@@ -21,7 +21,7 @@ function UsersContainer({ mode, currentPlayer, players }) {
         <PlayerCard
           className="in-users-container"
           avatarClassName={currentPlayer.avatar}
-          name={currentPlayer.player.name}
+          name={currentPlayer.player.nickName}
           isYou
         />
       )}
@@ -31,8 +31,8 @@ function UsersContainer({ mode, currentPlayer, players }) {
           players.map((player) => (
             <PlayerCard
               className="in-users-container"
-              key={player.player.id}
-              name={player.player.name}
+              key={player.player.name}
+              name={player.player.nickName}
               avatarClassName={player.avatar}
               assignedCharacter={player.player.character}
             />

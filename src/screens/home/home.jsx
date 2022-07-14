@@ -3,22 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import ScreenWrapper from '../../components/wrappers/screen-wrapper/screen-wrapper';
 import GameDataContext from '../../contexts/game-data-context';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import {
-  NUMBER_OF_PLAYERS,
-  WAITING_FOR_PLAYERS,
-  SUGGESTING_CHARACTERS,
-  LOADING,
-  LOBBY,
-} from '../../constants/constants';
+import { LOADING, WAITING_FOR_PLAYERS } from '../../constants/constants';
 import './home.scss';
 import PlayersOnlineTitle from '../../components/players-online-title/players-online-title';
 import AfterLogin from './AfterLogin';
 import BeforeLogin from './BeforeLogin';
-import { createGame, leaveGame } from '../../services/games-service';
+import {
+  findAvailableGames,
+  createGame,
+  leaveGame,
+  enrollToGame,
+} from '../../services/games-service';
 
 function Homepage() {
-  const { gameData, setGameData, resetData, playerId } =
-    useContext(GameDataContext);
+  const { setGameData, resetData, playerId } = useContext(GameDataContext);
   const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
 
@@ -41,16 +39,33 @@ function Homepage() {
   }, []);
 
   const onCreateGame = useCallback(async () => {
-    try {
-      const { data } = await createGame(playerId, NUMBER_OF_PLAYERS);
+    const { data } = await findAvailableGames(playerId);
+    const availableGames = data.filter(
+      (game) => game.status === WAITING_FOR_PLAYERS
+    );
+    const game = availableGames[0];
 
-      if (data) {
-        setGameData(data);
-        sessionStorage.setItem('gameId', data.id);
+    if (game) {
+      try {
+        await enrollToGame(playerId, game.id);
+        setGameData(game);
+        sessionStorage.setItem('gameId', game.id);
         navigate(LOADING);
+      } catch (error) {
+        //to do: handle errors
       }
-    } catch (error) {
-      //todo: handle errors
+    } else {
+      try {
+        const { data } = await createGame(playerId);
+
+        if (data) {
+          setGameData(data);
+          sessionStorage.setItem('gameId', data.id);
+          navigate(LOADING);
+        }
+      } catch (error) {
+        //todo: handle errors
+      }
     }
   }, [setGameData, playerId, navigate]);
 

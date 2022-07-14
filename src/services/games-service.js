@@ -24,6 +24,14 @@ async function getAllPlayersCount(player) {
   });
 }
 
+async function enrollToGame(player, id) {
+  return axios({
+    method: 'post',
+    url: `/api/v1/games/${id}/players`,
+    headers: { 'X-Player': player },
+  });
+}
+
 function createGame(player, playersNum) {
   return axios({
     method: 'post',
@@ -41,7 +49,7 @@ function suggestCharacter(player, id, name, character) {
     url: `/api/v1/games/${id}/characters`,
     headers: { 'X-Player': player },
     data: {
-      name: name,
+      nickName: name,
       character: character,
     },
   });
@@ -99,6 +107,7 @@ function leaveGame(player, id) {
 export {
   findGameById,
   findAvailableGames,
+  enrollToGame,
   createGame,
   suggestCharacter,
   findTurnInfo,

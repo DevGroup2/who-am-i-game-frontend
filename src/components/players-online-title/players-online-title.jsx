@@ -9,9 +9,9 @@ function PlayersOnlineTitle() {
   const { playerId } = useContext(GameDataContext);
   const [playerNum, setPlayerNum] = useState();
 
-  useInterval(async () => {
-    setPlayerNum((await getAllPlayersCount(playerId)).data);
-  }, 1000);
+  // useInterval(async () => {
+  //   setPlayerNum((await getAllPlayersCount(playerId)).data);
+  // }, 1000);
 
   return (
     <span className="players-online">
