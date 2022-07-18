@@ -4,7 +4,7 @@ import {
   LOADING,
   LOBBY,
   PLAY,
-  PROCESSING_QUESTION,
+  STARTS,
   SUGGESTING_CHARACTERS,
   WAITING_FOR_PLAYERS,
 } from '../constants/constants';
@@ -58,7 +58,7 @@ export default function useGameData() {
       return;
     }
 
-    if (gameData.status === PROCESSING_QUESTION) {
+    if (gameData.status === STARTS) {
       navigate(PLAY);
 
       return;

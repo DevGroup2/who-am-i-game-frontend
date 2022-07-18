@@ -17,10 +17,12 @@ function Lobby() {
   const { gameData, playerId } = useContext(GameDataContext);
   const [leaveModalActive, setLeaveModalActive] = useState(false);
   const [suggestModalActive, setSuggestModalActive] = useState(false);
-  const [suggestBtn, setSuggestBtn] = useState(true);
 
   useGameData();
   const { currentPlayer, playersWithoutCurrent } = usePlayers();
+  const [suggestBtn, setSuggestBtn] = useState(
+    currentPlayer.playerState !== READY
+  );
 
   const submitCharacter = async (event, playerName, characterName) => {
     event.preventDefault();
@@ -53,7 +55,9 @@ function Lobby() {
                       avatarClassName={currentPlayer.avatar}
                       name={currentPlayer.name}
                       playerStatusClassName={
-                        currentPlayer.state === READY ? 'yes' : 'unsure'
+                        currentPlayer.player.playerState === READY
+                          ? 'yes'
+                          : 'unsure'
                       }
                       isYou
                     />
@@ -64,7 +68,7 @@ function Lobby() {
                       avatarClassName={player.avatar}
                       name={player.name}
                       playerStatusClassName={
-                        player.state === READY ? 'yes' : 'unsure'
+                        player.player.playerState === READY ? 'yes' : 'unsure'
                       }
                     />
                   ))}
