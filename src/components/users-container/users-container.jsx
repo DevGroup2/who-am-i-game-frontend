@@ -3,6 +3,7 @@ import PlayerCard from '../player-card/player-card';
 import ModalContext from '../../contexts/modal-context';
 import './users-container.scss';
 import { useContext } from 'react';
+import { ANSWERING, GUESSING } from '../../constants/constants';
 
 function UsersContainer({ mode, currentPlayer, players }) {
   const modalActive = useContext(ModalContext)[0];
@@ -13,7 +14,7 @@ function UsersContainer({ mode, currentPlayer, players }) {
         <p className="users__turn">TURN TIME</p>
         <CountdownTimer
           small={'v-small'}
-          time={mode === 'guess' || mode === 'answer' ? 20 : 60}
+          time={mode === GUESSING || mode === ANSWERING ? 20 : 60}
           paused={modalActive}
         />
       </div>

@@ -21,7 +21,7 @@ function Lobby() {
   useGameData();
   const { currentPlayer, playersWithoutCurrent } = usePlayers();
   const [suggestBtn, setSuggestBtn] = useState(
-    currentPlayer.playerState !== READY
+    currentPlayer && currentPlayer.player.playerState !== READY
   );
 
   const submitCharacter = async (event, playerName, characterName) => {

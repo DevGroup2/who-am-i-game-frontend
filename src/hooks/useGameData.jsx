@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
+  IN_PROGRESS,
   LOADING,
   LOBBY,
   PLAY,
@@ -9,7 +10,7 @@ import {
   WAITING_FOR_PLAYERS,
 } from '../constants/constants';
 import GameDataContext from '../contexts/game-data-context';
-import { findGameById } from '../services/games-service';
+import { findGameById, startGame } from '../services/games-service';
 
 export default function useGameData() {
   const { gameData, setGameData, resetData, playerId } =
@@ -39,6 +40,14 @@ export default function useGameData() {
   });
 
   useEffect(() => {
+    async function startingGame() {
+      try {
+        await startGame(playerId, gameData.id);
+      } catch (error) {
+        //to do: handle errors
+      }
+    }
+
     if (!gameData.id && !sessionStorage.gameId) {
       resetData();
       navigate('/');
@@ -59,10 +68,16 @@ export default function useGameData() {
     }
 
     if (gameData.status === STARTS) {
-      navigate(PLAY);
+      startingGame();
 
       return;
     }
+
+    if (gameData.status === IN_PROGRESS) {
+      navigate(PLAY);
+
+      return;
+    } else console.log('STATUS', gameData.status);
   }, [gameData, resetData, playerId, navigate]);
 
   return;

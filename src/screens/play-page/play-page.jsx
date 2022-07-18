@@ -39,12 +39,12 @@ function PlayPage() {
               {currentPlayer && (
                 <>
                   <UsersContainer
-                    mode={currentPlayer.state}
+                    mode={currentPlayer.player.playerState}
                     currentPlayer={currentPlayer}
                     players={playersWithoutCurrent}
                   />
                   <HistoryContainer
-                    mode={currentPlayer.state}
+                    mode={currentPlayer.player.playerState}
                     currentPlayer={currentPlayer}
                   />
                 </>
