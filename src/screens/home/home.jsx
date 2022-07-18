@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import ScreenWrapper from '../../components/wrappers/screen-wrapper/screen-wrapper';
 import GameDataContext from '../../contexts/game-data-context';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { LOADING, WAITING_FOR_PLAYERS } from '../../constants/constants';
+import {
+  LOADING,
+  NUMBER_OF_PLAYERS,
+  WAITING_FOR_PLAYERS,
+} from '../../constants/constants';
 import './home.scss';
 import PlayersOnlineTitle from '../../components/players-online-title/players-online-title';
 import AfterLogin from './AfterLogin';
@@ -56,7 +60,7 @@ function Homepage() {
       }
     } else {
       try {
-        const { data } = await createGame(playerId);
+        const { data } = await createGame(playerId, NUMBER_OF_PLAYERS);
 
         if (data) {
           setGameData(data);

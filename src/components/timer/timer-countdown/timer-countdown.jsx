@@ -27,15 +27,15 @@ function CountdownTimer({ inLobby, time = 60, small, timeClassName, paused }) {
 
   useEffect(() => {
     async function leaveResetData() {
-      if (seconds === 0) {
-        try {
-          await leaveGame(playerId, gameData.id);
-          resetData();
-          navigate(INACTIVE);
-        } catch (error) {
-          //to do: handle errors
-        }
-      }
+      // if (seconds <= 0) {
+      //   try {
+      //     await leaveGame(playerId, gameData.id);
+      //     resetData();
+      //     navigate(INACTIVE);
+      //   } catch (error) {
+      //     //to do: handle errors
+      //   }
+      // }
     }
     leaveResetData();
   });
