@@ -43,6 +43,14 @@ function createGame(player, playersNum) {
   });
 }
 
+function startGame(player, id) {
+  return axios({
+    method: 'post',
+    url: `/api/v1/games/${id}`,
+    headers: { 'X-Player': player },
+  });
+}
+
 function suggestCharacter(player, id, name, character) {
   return axios({
     method: 'post',
@@ -98,7 +106,7 @@ function answerQuestion(player, id, question) {
 
 function leaveGame(player, id) {
   return axios({
-    method: 'delete',
+    method: 'post',
     url: `/api/v1/games/${id}/leave`,
     headers: { 'X-Player': player },
   });
@@ -109,6 +117,7 @@ export {
   findAvailableGames,
   enrollToGame,
   createGame,
+  startGame,
   suggestCharacter,
   findTurnInfo,
   askQuestion,
