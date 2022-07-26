@@ -106,10 +106,10 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
   }, [lastHistoryItemAnswersLength, answersLength, fetchHistory]);
 
   useEffect(() => {
-    if (playerTurn.player.playerState === WAITING_FOR_ANSWERS) {
+    if (playerTurn?.player.playerState === WAITING_FOR_ANSWERS) {
       setAnswer('');
     }
-  }, [playerTurn.player.playerState]);
+  }, [playerTurn?.player.playerState]);
 
   const submitAsk = useCallback(
     async (question) => {

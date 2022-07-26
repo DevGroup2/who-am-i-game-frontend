@@ -13,7 +13,7 @@ function UsersContainer({ currentPlayer, players, playerTurn, onTimerFinish }) {
         <p className="users__turn">TURN TIME</p>
         <CountdownTimer
           small={'v-small'}
-          time={playerTurn.question ? 20 : 60}
+          time={playerTurn?.question ? 20 : 60}
           paused={modalActive}
           onFinish={onTimerFinish}
         />
