@@ -5,7 +5,7 @@ import { ReactComponent as ReactCross } from '../../assets/svg/x.svg';
 import clsx from 'clsx';
 import { NO, YES } from '../../constants/constants';
 
-function AnswerIcon({ status, user }) {
+function AnswerIcon({ status, avatar }) {
   let icon = null;
   const classes = 'icon_status';
 
@@ -18,11 +18,12 @@ function AnswerIcon({ status, user }) {
       break;
     default:
       icon = <ReactQuestion className={classes} />;
+      break;
   }
 
   return (
     <div className="icon_wrapper">
-      <div className={clsx('player__card-avatar', user.avatar)}></div>
+      <div className={clsx('player__card-avatar', avatar)}></div>
       {status && icon}
     </div>
   );
