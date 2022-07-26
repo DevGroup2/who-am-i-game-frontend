@@ -63,10 +63,8 @@ function App() {
     if (gameId && userId) {
       try {
         const { data } = await findGameById(userId, gameId);
-        console.log('DATA', data);
 
         if (data.players.length) {
-          console.log('PLAYERS', data.players);
           const players = data.players.map((player, index) => ({
             ...player,
             avatar: `avatar0${index + 1}`,

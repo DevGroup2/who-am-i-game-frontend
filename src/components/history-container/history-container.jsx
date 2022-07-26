@@ -15,6 +15,7 @@ import {
   ASKING,
   GUESSING,
   QUESTION,
+  WAITING_FOR_ANSWERS,
   WAITING_FOR_QUESTION,
 } from '../../constants/constants';
 import { useContext } from 'react';
@@ -104,11 +105,11 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
     }
   }, [lastHistoryItemAnswersLength, answersLength, fetchHistory]);
 
-  // useEffect(() => {
-  //   if (playerTurn.player.playerState !== GUESSED) {
-  //     setAnswer('');
-  //   }
-  // }, [playerTurn.player.playerState]);
+  useEffect(() => {
+    if (playerTurn.player.playerState === WAITING_FOR_ANSWERS) {
+      setAnswer('');
+    }
+  }, [playerTurn.player.playerState]);
 
   const submitAsk = useCallback(
     async (question) => {
