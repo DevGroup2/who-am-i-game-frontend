@@ -3,25 +3,27 @@ import { ReactComponent as ReactCheck } from '../../assets/svg/check.svg';
 import { ReactComponent as ReactQuestion } from '../../assets/svg/question-mark.svg';
 import { ReactComponent as ReactCross } from '../../assets/svg/x.svg';
 import clsx from 'clsx';
+import { NO, YES } from '../../constants/constants';
 
-function AnswerIcon({ status, user }) {
+function AnswerIcon({ status, avatar }) {
   let icon = null;
   const classes = 'icon_status';
 
   switch (status) {
-    case 'yes':
+    case YES:
       icon = <ReactCheck className={classes} />;
       break;
-    case 'no':
+    case NO:
       icon = <ReactCross className={classes} />;
       break;
     default:
       icon = <ReactQuestion className={classes} />;
+      break;
   }
 
   return (
     <div className="icon_wrapper">
-      <div className={clsx('player__card-avatar', user.avatar)}></div>
+      <div className={clsx('player__card-avatar', avatar)}></div>
       {status && icon}
     </div>
   );

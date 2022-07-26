@@ -35,19 +35,28 @@
   filter: brightness(140%);
 }
 
-.btn-green-solid {
+.btn-green-solid,
+.btn-pink-solid,
+.btn-orange-solid {
+  width: 100%;
+  color: $font-black;
+}
+
+.btn-green-solid,
+.btn-green-solid.btn-half:disabled,
+.btn-green-solid.btn-third:disabled {
   background: $btn-green;
-  width: 100%;
 }
 
-.btn-pink-solid {
+.btn-pink-solid,
+.btn-pink-solid.btn-half:disabled,
+.btn-pink-solid.btn-third:disabled {
   background: $btn-pink;
-  width: 100%;
 }
 
-.btn-yellow-solid {
+.btn-yellow-solid,
+.btn-yellow-solid.btn-guess:disabled {
   background: $btn-yellow;
-  width: 100%;
 }
 
 .btn-lightgray-outline {
@@ -62,6 +71,11 @@
   font-weight: 900;
   font-size: 24px;
   width: 290px;
+
+  &:disabled {
+    background-color: $secondary-background-blue;
+    color: $main-font-color;
+  }
 }
 
 .btn-blue-outline-small {
@@ -87,7 +101,8 @@
   width: 255px;
 }
 
-.btn-orange-solid {
+.btn-orange-solid,
+.btn-orange-solid.btn-third:disabled {
   background: $btn-orange;
 }
 
@@ -127,4 +142,10 @@
   width: 24px;
   height: 24px;
   background-image: url(../../assets/icons/fb.svg);
+}
+
+.btn-answer:disabled,
+.btn-answer:disabled,
+.btn-answer:disabled {
+  filter: brightness(130%);
 }

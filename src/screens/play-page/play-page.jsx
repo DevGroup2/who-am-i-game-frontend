@@ -2,12 +2,12 @@ import UsersContainer from '../../components/users-container/users-container';
 import HistoryContainer from '../../components/history-container/history-container';
 import GuessCharacterModal from '../../components/modals/guess-a-character';
 import Header from '../../components/header/header';
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import ModalContext from '../../contexts/modal-context';
 import './play-page.scss';
 import ScreenWrapper from '../../components/wrappers/screen-wrapper/screen-wrapper';
 import Spinner from '@atlaskit/spinner';
-import { askQuestion } from '../../services/games-service';
+import { askGuess } from '../../services/games-service';
 import GameDataContext from '../../contexts/game-data-context';
 import useGameData from '../../hooks/useGameData';
 import usePlayers from '../../hooks/usePlayers';
@@ -17,17 +17,20 @@ function PlayPage() {
   const [active, setActive] = useState(false);
 
   useGameData();
-  const { currentPlayer, playersWithoutCurrent } = usePlayers();
+  const { currentPlayer, playersWithoutCurrent, playerTurn } = usePlayers();
 
-  const submitGuess = async (event, guess) => {
-    event.preventDefault();
-    try {
-      await askQuestion(playerId, gameData.id, guess);
-      setActive(false);
-    } catch (error) {
-      //to do: handle errors
-    }
-  };
+  const onSubmitGuess = useCallback(
+    async (event, guess) => {
+      event.preventDefault();
+      try {
+        await askGuess(playerId, gameData.id, guess);
+        setActive(false);
+      } catch (error) {
+        //to do: handle errors
+      }
+    },
+    [gameData.id, playerId]
+  );
 
   return (
     <ScreenWrapper className="lobby-screen">
@@ -39,19 +42,21 @@ function PlayPage() {
               {currentPlayer && (
                 <>
                   <UsersContainer
-                    mode={currentPlayer.player.playerState}
                     currentPlayer={currentPlayer}
                     players={playersWithoutCurrent}
+                    playerTurn={playerTurn}
+                    timer={gameData.timer}
                   />
                   <HistoryContainer
-                    mode={currentPlayer.player.playerState}
                     currentPlayer={currentPlayer}
+                    players={playersWithoutCurrent}
+                    playerTurn={playerTurn}
                   />
                 </>
               )}
               <GuessCharacterModal
                 active={active}
-                onSubmit={submitGuess}
+                onSubmit={onSubmitGuess}
                 onCancel={() => setActive(false)}
               />
             </ModalContext.Provider>
