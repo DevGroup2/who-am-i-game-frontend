@@ -26,7 +26,26 @@ export default function useGameData() {
         try {
           const { data } = await findGameById(userId, gameId);
 
-          if (data.players.length) setGameData(data);
+          if (data.players.length) {
+            const players = data.players.map((player, index) => ({
+              ...player,
+              avatar: `avatar0${index + 1}`,
+              nickname: player.player.nickName || `Player ${index + 1}`,
+            }));
+
+            const playersById = players.reduce((all, player) => {
+              return {
+                ...all,
+                [player.player.name]: player,
+              };
+            }, {});
+
+            setGameData((oldData) => ({
+              ...data,
+              players,
+              playersById: { ...oldData.playersById, ...playersById },
+            }));
+          }
         } catch (error) {
           if (error.response.status === 404) {
             resetData();
@@ -77,7 +96,7 @@ export default function useGameData() {
       navigate(PLAY);
 
       return;
-    } else console.log('STATUS', gameData.status);
+    }
   }, [gameData, resetData, playerId, navigate]);
 
   return;
