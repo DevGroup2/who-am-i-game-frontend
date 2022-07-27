@@ -33,42 +33,39 @@ function PlayPage() {
   );
 
   return (
-    console.log(gameData),
-    (
-      <ScreenWrapper className="lobby-screen">
-        {currentPlayer ? (
-          <>
-            <Header type="play-game" />
-            <div className="lobby-screen__content_wrapper">
-              <ModalContext.Provider value={[active, setActive]}>
-                {currentPlayer && (
-                  <>
-                    <UsersContainer
-                      currentPlayer={currentPlayer}
-                      players={playersWithoutCurrent}
-                      playerTurn={playerTurn}
-                      timer={gameData.timer}
-                    />
-                    <HistoryContainer
-                      currentPlayer={currentPlayer}
-                      players={playersWithoutCurrent}
-                      playerTurn={playerTurn}
-                    />
-                  </>
-                )}
-                <GuessCharacterModal
-                  active={active}
-                  onSubmit={onSubmitGuess}
-                  onCancel={() => setActive(false)}
-                />
-              </ModalContext.Provider>
-            </div>
-          </>
-        ) : (
-          <Spinner appearance="invert" />
-        )}
-      </ScreenWrapper>
-    )
+    <ScreenWrapper className="lobby-screen">
+      {currentPlayer ? (
+        <>
+          <Header type="play-game" />
+          <div className="lobby-screen__content_wrapper">
+            <ModalContext.Provider value={[active, setActive]}>
+              {currentPlayer && (
+                <>
+                  <UsersContainer
+                    currentPlayer={currentPlayer}
+                    players={playersWithoutCurrent}
+                    playerTurn={playerTurn}
+                    timer={gameData.timer}
+                  />
+                  <HistoryContainer
+                    currentPlayer={currentPlayer}
+                    players={playersWithoutCurrent}
+                    playerTurn={playerTurn}
+                  />
+                </>
+              )}
+              <GuessCharacterModal
+                active={active}
+                onSubmit={onSubmitGuess}
+                onCancel={() => setActive(false)}
+              />
+            </ModalContext.Provider>
+          </div>
+        </>
+      ) : (
+        <Spinner appearance="invert" />
+      )}
+    </ScreenWrapper>
   );
 }
 
