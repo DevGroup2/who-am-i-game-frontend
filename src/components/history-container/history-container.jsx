@@ -139,48 +139,54 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
     [fetchGame, gameData.id, playerId]
   );
 
-  const submitAnswerGuess = useCallback(
-    async (answer) => {
-      setLoading(true);
-      setAnswer(answer);
-      try {
-        await answerGuess(playerId, gameData.id, answer);
-        await fetchGame();
-      } catch (error) {
-        //to do: handle error
-      }
-      setLoading(false);
-    },
-    [fetchGame, gameData.id, playerId]
-  );
+  // const submitAnswerGuess = useCallback(
+  //   async (answer) => {
+  //     setLoading(true);
+  //     setAnswer(answer);
+  //     try {
+  //       await answerGuess(playerId, gameData.id, answer);
+  //       await fetchGame();
+  //     } catch (error) {
+  //       //to do: handle error
+  //     }
+  //     setLoading(false);
+  //   },
+  //   [fetchGame, gameData.id, playerId]
+  // );
 
   return (
     <div className="history">
       <div className="history_list">
-        {history?.map((item, index) => (
-          <HistoryItem
-            key={index}
-            avatar={item.avatar}
-            question={item.question}
-            answers={item.answers}
-          />
-        ))}
+        {history?.map(
+          (item, index) =>
+            item.question && (
+              <HistoryItem
+                key={index}
+                avatar={item.avatar}
+                question={item.question}
+                answers={item.answers}
+              />
+            )
+        )}
         <div className="list_scroll_bottom" ref={bottomElement}></div>
       </div>
-      {mode === ASKING && (
-        <QuestionForm disabled={loading} onSubmit={submitAsk} />
-      )}
-      {mode === ANSWERING && playerTurn?.question && (
-        <AnswerForm
-          mode={playerTurn.player.playerState === GUESSING ? GUESSING : mode}
-          onSubmit={
-            playerTurn.player.playerState === GUESSING
-              ? submitAnswerGuess
-              : submitAnswer
-          }
-          disabled={loading}
-        />
-      )}
+      <div className="history_bottom">
+        {mode === ASKING && (
+          <QuestionForm disabled={loading} onSubmit={submitAsk} />
+        )}
+        {mode === ANSWERING && playerTurn?.question && (
+          <AnswerForm
+            mode={playerTurn.player.playerState === GUESSING ? GUESSING : mode}
+            onSubmit={
+              submitAnswer
+              // playerTurn.player.playerState === GUESSING
+              //   ? submitAnswerGuess
+              //   : submitAnswer
+            }
+            disabled={loading}
+          />
+        )}
+      </div>
     </div>
   );
 }
