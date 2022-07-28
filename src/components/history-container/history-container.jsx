@@ -2,10 +2,10 @@ import HistoryItem from '../history-item/history-item';
 import QuestionForm from '../question-form/question-form';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import AnswerForm from '../answer-form/answer-form';
+import MessageBlock from '../message-block/message-block';
 import './history-container.scss';
 import {
   getHistory,
-  answerGuess,
   answerQuestion,
   askQuestion,
 } from '../../services/games-service';
@@ -15,6 +15,8 @@ import {
   ASKING,
   GUESSING,
   QUESTION,
+  RESPONSE,
+  WAITING,
   WAITING_FOR_ANSWERS,
   WAITING_FOR_QUESTION,
 } from '../../constants/constants';
@@ -27,6 +29,7 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [answer, setAnswer] = useState('');
+  const [showAnswer, setShowAnswer] = useState(false);
   const mode = currentPlayer.player.playerState;
 
   useEffect(() => {
@@ -38,7 +41,14 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
       behavior: 'auto',
       block: 'end',
     });
-  });
+  }, [history]);
+
+  useEffect(() => {
+    if (mode === ASKING || mode === WAITING_FOR_ANSWERS) {
+      console.log('MODE', mode);
+      setAnswer('');
+    }
+  }, [mode]);
 
   const fetchHistory = useCallback(
     async function () {
@@ -51,7 +61,10 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
         const gameHistory = data.map((item) => {
           const allPlayers = item.map((player, index) => ({
             id: player.player,
-            avatar: `avatar0${index + 1}`,
+            avatar:
+              gameData.players.find(
+                (user) => user.player.name === player.player
+              )?.avatar || `avatar0${index + 1}`,
             action: player.action,
             value: player.value,
           }));
@@ -71,7 +84,7 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
         setHistory(gameHistory);
       }
     },
-    [playerId, gameData.id]
+    [playerId, gameData.id, gameData.players]
   );
 
   useEffect(() => {
@@ -135,24 +148,11 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
         //to do: handle error
       }
       setLoading(false);
+      setAnswer(answer);
+      setShowAnswer(true);
     },
     [fetchGame, gameData.id, playerId]
   );
-
-  // const submitAnswerGuess = useCallback(
-  //   async (answer) => {
-  //     setLoading(true);
-  //     setAnswer(answer);
-  //     try {
-  //       await answerGuess(playerId, gameData.id, answer);
-  //       await fetchGame();
-  //     } catch (error) {
-  //       //to do: handle error
-  //     }
-  //     setLoading(false);
-  //   },
-  //   [fetchGame, gameData.id, playerId]
-  // );
 
   return (
     <div className="history">
@@ -177,14 +177,12 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
         {mode === ANSWERING && playerTurn?.question && (
           <AnswerForm
             mode={playerTurn.player.playerState === GUESSING ? GUESSING : mode}
-            onSubmit={
-              submitAnswer
-              // playerTurn.player.playerState === GUESSING
-              //   ? submitAnswerGuess
-              //   : submitAnswer
-            }
+            onSubmit={submitAnswer}
             disabled={loading}
           />
+        )}
+        {mode === WAITING_FOR_QUESTION && showAnswer && !loading && (
+          <MessageBlock mode={WAITING} message={answer} />
         )}
       </div>
     </div>

@@ -11,6 +11,7 @@
   font-weight: 900;
   text-transform: uppercase;
   gap: 16px;
+  margin-top: 104px;
 }
 
 .response-yes {
@@ -24,12 +25,23 @@
 }
 
 .waiting-yes {
+  font-size: 16px;
+  line-height: 19px;
   color: $btn-green;
   background: $primary-background-blue;
 }
 
 .waiting-no {
+  font-size: 16px;
+  line-height: 19px;
   color: $btn-pink;
+  background: $primary-background-blue;
+}
+
+.waiting-unsure {
+  font-size: 16px;
+  line-height: 19px;
+  color: $btn-orange;
   background: $primary-background-blue;
 }
 
@@ -48,6 +60,17 @@
   height: 19.2px;
   width: 19.2px;
   background-image: url('../../assets/icons/cross.svg');
+  filter: invert(57%) sepia(65%) saturate(3655%) hue-rotate(299deg)
+    brightness(104%) contrast(101%);
+  background-size: 19.2px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.icon-waiting-unsure {
+  height: 19.2px;
+  width: 19.2px;
+  background-image: url('../../assets/icons/questionmark.svg');
   filter: invert(57%) sepia(65%) saturate(3655%) hue-rotate(299deg)
     brightness(104%) contrast(101%);
   background-size: 19.2px;

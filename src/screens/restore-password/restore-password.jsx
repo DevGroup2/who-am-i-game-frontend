@@ -43,7 +43,7 @@ function RestorePassword() {
             Cancel
           </Btn>
           <Btn disabled={!formIsValid} type="submit">
-            sign in
+            Restore Password
           </Btn>
         </div>
       </form>

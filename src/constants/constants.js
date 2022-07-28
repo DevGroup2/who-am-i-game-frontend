@@ -10,8 +10,7 @@ const WAITING_FOR_ANSWERS = 'WAITING_FOR_ANSWERS';
 const ANSWERING = 'ANSWERING';
 const WAITING_FOR_QUESTION = 'WAITING_FOR_QUESTION';
 const GUESSING = 'GUESSING';
-// const GUESSED = 'GUESSED';
-// const WAITING = 'WAITING';
+const WAITING = 'WAITING';
 const RESPONSE = 'RESPONSE';
 const QUESTION = 'QUESTION';
 const ANSWER = 'ANSWER';
@@ -32,6 +31,11 @@ const SIGN_IN = '/sign-in';
 const RESTORE = '/restore';
 const NEW_PASSWORD = '/new-password';
 const PROFILE = '/profile';
+
+const RGX_PASS =
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$/;
+const RGX_USERNAME = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]$/;
+const RGX_EMAIL = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const THEME_FILTER = [
   { title: 'Actors', checked: false },
@@ -67,8 +71,7 @@ export {
   ANSWERING,
   WAITING_FOR_QUESTION,
   GUESSING,
-  // GUESSED,
-  // WAITING,
+  WAITING,
   RESPONSE,
   QUESTION,
   ANSWER,
@@ -91,4 +94,7 @@ export {
   RESTORE,
   NEW_PASSWORD,
   PROFILE,
+  RGX_PASS,
+  RGX_USERNAME,
+  RGX_EMAIL,
 };

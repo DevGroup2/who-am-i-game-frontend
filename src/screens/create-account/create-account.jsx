@@ -5,6 +5,7 @@ import InputPassword from '../../components/Input/InputPassword';
 import Btn from '../../components/btn/btn';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { RGX_EMAIL, RGX_PASS, RGX_USERNAME } from '../../constants/constants';
 
 function CreateAccount() {
   const navigate = useNavigate();
@@ -25,11 +26,13 @@ function CreateAccount() {
   };
 
   const formIsValid =
-    password.length >= 8 &&
-    password.length < 20 &&
-    email.length > 3 &&
-    username.length > 3 &&
-    username.length < 8;
+    RGX_PASS.test(password) &&
+    RGX_EMAIL.test(email) &&
+    !RGX_USERNAME.test(username) &&
+    email.length >= 3 &&
+    email.length < 256 &&
+    username.length >= 2 &&
+    username.length < 50;
 
   const submitHandler = (e) => {
     e.preventDefault();
