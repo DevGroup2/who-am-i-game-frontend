@@ -8,13 +8,10 @@ function MessageBlock({ mode, message }) {
   }`;
 
   return (
-    console.log(mode, message),
-    (
-      <div className={clsx('text', modeClassName)}>
-        <div className={`icon-${modeClassName}`}></div>
-        <span className={modeClassName}>{messageConverter(mode, message)}</span>
-      </div>
-    )
+    <div className={clsx('text', modeClassName)}>
+      <div className={`icon-${modeClassName}`}></div>
+      <span className={modeClassName}>{messageConverter(mode, message)}</span>
+    </div>
   );
 }
 

@@ -15,7 +15,6 @@ import {
   ASKING,
   GUESSING,
   QUESTION,
-  RESPONSE,
   WAITING,
   WAITING_FOR_ANSWERS,
   WAITING_FOR_QUESTION,
@@ -41,11 +40,10 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
       behavior: 'auto',
       block: 'end',
     });
-  }, [history]);
+  }, [history.length]);
 
   useEffect(() => {
     if (mode === ASKING || mode === WAITING_FOR_ANSWERS) {
-      console.log('MODE', mode);
       setAnswer('');
     }
   }, [mode]);
@@ -181,9 +179,12 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
             disabled={loading}
           />
         )}
-        {mode === WAITING_FOR_QUESTION && showAnswer && !loading && (
-          <MessageBlock mode={WAITING} message={answer} />
-        )}
+        {mode === WAITING_FOR_QUESTION &&
+          showAnswer &&
+          !loading &&
+          playerTurn?.player.playerState === WAITING_FOR_ANSWERS && (
+            <MessageBlock mode={WAITING} message={answer} />
+          )}
       </div>
     </div>
   );

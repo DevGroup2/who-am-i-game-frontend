@@ -1,8 +1,6 @@
 import { RESPONSE, WAITING } from '../constants/constants';
 
 function messageConverter(mode, message) {
-  console.log('FUNC', mode, message);
-
   if (mode === RESPONSE) {
     if (message === 'YES') {
       return 'Right. Your turn';
