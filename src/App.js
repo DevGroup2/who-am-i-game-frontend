@@ -25,6 +25,7 @@ import {
   RESTORE,
   NEW_PASSWORD,
   PROFILE,
+  NUMBER_OF_PLAYERS,
 } from './constants/constants';
 import CreateAccount from './screens/create-account/create-account';
 import SignIn from './screens/signin-page/signin-page';
@@ -38,10 +39,16 @@ import {
 } from './services/games-service';
 import { useNavigate } from 'react-router-dom';
 
-const initialData = { status: null, players: [], winners: [], playersById: {} };
+const initialData = {
+  status: null,
+  players: [],
+  winners: [],
+  avatars: [],
+  playersById: {},
+};
 
 function App() {
-  const [gameData, setGameData] = useState({ status: null, players: [] });
+  const [gameData, setGameData] = useState(initialData);
   const [playerId, setPlayerId] = useState(sessionStorage.playerId || uuidv4());
   const navigate = useNavigate();
 
@@ -65,9 +72,22 @@ function App() {
         const { data } = await findGameById(userId, gameId);
 
         if (data.players.length) {
+          let avatars = gameData.avatars || initialData.avatars;
+
+          if (
+            data.players.length === NUMBER_OF_PLAYERS &&
+            !gameData.avatars?.length
+          ) {
+            avatars = data.players.map((player, index) => ({
+              id: player.player.name,
+              avatar: `avatar0${index + 1}`,
+            }));
+          }
           const players = data.players.map((player, index) => ({
             ...player,
-            avatar: `avatar0${index + 1}`,
+            avatar:
+              avatars.find((user) => user.id === player.player.name)?.avatar ||
+              `avatar0${index + 1}`,
             nickname: player.player.nickname || `Player ${index + 1}`,
           }));
           const playersById = players.reduce((all, player) => {
@@ -79,6 +99,7 @@ function App() {
           setGameData((oldData) => ({
             ...data,
             players,
+            avatars,
             playersById: { ...oldData.playersById, ...playersById },
           }));
         }
@@ -89,7 +110,7 @@ function App() {
         }
       }
     }
-  }, [gameData.id, navigate, playerId, resetData]);
+  }, [gameData.id, navigate, playerId, resetData, gameData.avatars]);
 
   const leaveGame = useCallback(async () => {
     if (!gameData.id) {

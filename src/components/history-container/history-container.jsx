@@ -60,9 +60,8 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
           const allPlayers = item.map((player, index) => ({
             id: player.player,
             avatar:
-              gameData.players.find(
-                (user) => user.player.name === player.player
-              )?.avatar || `avatar0${index + 1}`,
+              gameData.avatars.find((user) => user.id === player.player)
+                ?.avatar || `avatar0${index + 1}`,
             action: player.action,
             value: player.value,
           }));
@@ -153,6 +152,7 @@ function HistoryContainer({ currentPlayer, players, playerTurn }) {
   );
 
   return (
+    // console.log(gameData),
     <div className="history">
       <div className="history_list">
         {history?.map(

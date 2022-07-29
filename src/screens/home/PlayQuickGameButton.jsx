@@ -16,17 +16,31 @@ import {
 import { useState } from 'react';
 
 export default function PlayQuickGameButton() {
-  const { setGameData, resetData, playerId } = useContext(GameDataContext);
+  const { gameData, setGameData, resetData, playerId } =
+    useContext(GameDataContext);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const setPlayers = useCallback(
     (data) => {
       if (data.players.length) {
+        let avatars = gameData.avatars || [];
+
+        if (
+          data.players.length === NUMBER_OF_PLAYERS &&
+          !gameData.avatars?.length
+        ) {
+          avatars = data.players.map((player, index) => ({
+            id: player.player.name,
+            avatar: `avatar0${index + 1}`,
+          }));
+        }
         const players = data.players.map((player, index) => ({
           ...player,
-          avatar: `avatar0${index + 1}`,
-          nickname: player.player.nickName || `Player ${index + 1}`,
+          avatar:
+            avatars.find((user) => user.id === player.player.name)?.avatar ||
+            `avatar0${index + 1}`,
+          nickname: player.player.nickname || `Player ${index + 1}`,
         }));
 
         const playersById = players.reduce((all, player) => {
@@ -35,17 +49,18 @@ export default function PlayQuickGameButton() {
             [player.player.name]: player,
           };
         }, {});
-
+        console.log('AVATARS', avatars);
         setGameData((oldData) => ({
           ...data,
           players,
+          avatars,
           playersById: { ...oldData.playersById, ...playersById },
         }));
         sessionStorage.setItem('gameId', data.id);
         navigate(LOADING);
       }
     },
-    [setGameData, navigate]
+    [setGameData, navigate, gameData.avatars]
   );
 
   const onCreateGame = useCallback(async () => {
